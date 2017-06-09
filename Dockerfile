@@ -2,12 +2,10 @@ FROM golang:1.8.3-alpine
 
 RUN apk add --no-cache --virtual .fetch-deps ca-certificates openssl tar
 
-ARG VERSION
-
 RUN mkdir -p /root/librdkafka
 WORKDIR /root/librdkafka
 
-RUN wget -O "librdkafka.tar.gz" "https://github.com/edenhill/librdkafka/archive/v$VERSION.tar.gz"
+RUN wget -O "librdkafka.tar.gz" "https://github.com/edenhill/librdkafka/archive/v0.9.4.tar.gz"
 RUN mkdir -p librdkafka-$VERSION
 
 RUN tar \
