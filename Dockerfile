@@ -1,13 +1,13 @@
 FROM golang:1.8.3-alpine
 
-RUN apk add --no-cache --virtual .fetch-deps ca-certificates openssl tar
+RUN apk add --no-cache --virtual .fetch-deps ca-certificates tar
 
-RUN apk add --no-cache pkgconfig g++
+RUN apk add --no-cache openssl pkgconfig g++
 
 RUN mkdir -p /root/librdkafka
 WORKDIR /root/librdkafka
 
-RUN wget -O "librdkafka.tar.gz" "https://github.com/edenhill/librdkafka/archive/v0.9.4.tar.gz"
+RUN wget -O "librdkafka.tar.gz" "https://github.com/edenhill/librdkafka/archive/master.tar.gz"
 
 RUN mkdir -p librdkafka
 
@@ -43,3 +43,5 @@ apk add --no-cache --virtual .librdkafka-rundeps \
 RUN cd / && \
   apk del .fetch-deps .build-deps && \
   rm -rf /root/librdkafka
+
+RUN mkdir /lib64 && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2
