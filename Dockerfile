@@ -1,6 +1,6 @@
 FROM golang:1.8.3-alpine
 
-RUN apk add --no-cache --virtual .fetch-deps ca-certificates openssl tar
+RUN apk add --no-cache --virtual .fetch-deps ca-certificates openssl tar pkgconfig
 
 RUN mkdir -p /root/librdkafka
 WORKDIR /root/librdkafka
