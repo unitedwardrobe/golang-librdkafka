@@ -1,30 +1,31 @@
 FROM golang:1.8.3-alpine
 
-RUN apk add --no-cache --virtual .fetch-deps ca-certificates openssl tar pkgconfig
+RUN apk add --no-cache --virtual .fetch-deps ca-certificates openssl tar
+
+RUN apk add --no-cache pkgconfig g++
 
 RUN mkdir -p /root/librdkafka
 WORKDIR /root/librdkafka
 
 RUN wget -O "librdkafka.tar.gz" "https://github.com/edenhill/librdkafka/archive/v0.9.4.tar.gz"
 
-RUN mkdir -p librdkafka-$VERSION
+RUN mkdir -p librdkafka
 
 RUN tar \
   --extract \
   --file "librdkafka.tar.gz" \
-  --directory "librdkafka-$VERSION" \
+  --directory "librdkafka" \
   --strip-components 1
 
 RUN apk add --no-cache --virtual .build-deps \
   bash \
-  g++ \
   openssl-dev \
   make \
   musl-dev \
   zlib-dev \
   python
 
-RUN cd "librdkafka-$VERSION" && \
+RUN cd "librdkafka" && \
   ./configure --prefix=/usr && \
   make -j "$(getconf _NPROCESSORS_ONLN)" && \
   make install
