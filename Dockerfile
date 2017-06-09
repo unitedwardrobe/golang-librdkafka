@@ -7,7 +7,7 @@ RUN apk add --no-cache openssl pkgconfig g++
 RUN mkdir -p /root/librdkafka
 WORKDIR /root/librdkafka
 
-RUN wget -O "librdkafka.tar.gz" "https://github.com/edenhill/librdkafka/archive/master.tar.gz"
+RUN wget -O "librdkafka.tar.gz" "https://github.com/gstipton/librdkafka/archive/master.tar.gz"
 
 RUN mkdir -p librdkafka
 
