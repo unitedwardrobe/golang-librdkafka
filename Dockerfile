@@ -4,10 +4,12 @@ RUN apk add --no-cache --virtual .fetch-deps ca-certificates tar
 
 RUN apk add --no-cache openssl pkgconfig g++
 
+ARG LIBRDKAFKA_VERSION=0.11.5
+
 RUN mkdir -p /root/librdkafka
 WORKDIR /root/librdkafka
 
-RUN wget -O "librdkafka.tar.gz" "https://github.com/edenhill/librdkafka/archive/v0.11.4.tar.gz"
+RUN wget -O "librdkafka.tar.gz" "https://github.com/edenhill/librdkafka/archive/v${LIBRDKAFKA_VERSION}.tar.gz"
 
 RUN mkdir -p librdkafka
 
@@ -45,3 +47,7 @@ RUN cd / && \
   rm -rf /root/librdkafka
 
 RUN mkdir /lib64 && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2
+
+ENV CGO_ENABLED=1 \
+    GOOS=linux \
+    GOARCH=amd64
