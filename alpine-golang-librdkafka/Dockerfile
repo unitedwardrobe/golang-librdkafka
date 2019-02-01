@@ -1,10 +1,10 @@
-FROM golang:alpine
+FROM golang:1.11.5-alpine3.8
 
 RUN apk add --no-cache --virtual .fetch-deps ca-certificates tar
 
 RUN apk add --no-cache openssl pkgconfig g++
 
-ARG LIBRDKAFKA_VERSION=0.11.5
+ARG LIBRDKAFKA_VERSION=0.11.6
 
 RUN mkdir -p /root/librdkafka
 WORKDIR /root/librdkafka
