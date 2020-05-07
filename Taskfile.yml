@@ -1,0 +1,60 @@
+version: '2'
+
+vars:
+  ALPVER: 3.11
+  GOVER: 1.14.2
+  KAFKAVER: 1.4.2
+
+tasks:
+  build-push:
+    desc: Build and push all images
+    cmds:
+      - task: build-alpine
+      - task: push-alpine
+      - task: build-alpine-static
+      - task: push-alpine-static
+      - task: build-circle
+      - task: push-circle
+
+  build-alpine:
+    desc: Build alpine image
+    cmds:
+      - docker build -t unitedwardrobe/golang-librdkafka:{{.TAG}} ./alpine-golang-librdkafka/{{.TAG}}
+      - docker push unitedwardrobe/golang-librdkafka:{{.TAG}}
+    vars:
+      TAG: alpine{{.ALPVER}}-golang{{.GOVER}}-librdkafka{{.KAFKAVER}}
+
+  push-alpine:
+    desc: Push alpine image
+    cmds:
+      - docker build -t unitedwardrobe/golang-librdkafka:{{.TAG}} ./alpine-golang-librdkafka/{{.TAG}}
+    vars:
+      TAG: alpine{{.ALPVER}}-golang{{.GOVER}}-librdkafka{{.KAFKAVER}}
+
+  build-alpine-static:
+    desc: Build alpine static image
+    cmds:
+      - docker build -t unitedwardrobe/golang-librdkafka:{{.TAG}} ./alpine-golang-librdkafka/{{.TAG}}
+    vars:
+      TAG: alpine{{.ALPVER}}-golang{{.GOVER}}-librdkafka{{.KAFKAVER}}-static
+
+  push-alpine-static:
+    desc: Push alpine static image
+    cmds:
+      - docker push unitedwardrobe/golang-librdkafka:{{.TAG}}
+    vars:
+      TAG: alpine{{.ALPVER}}-golang{{.GOVER}}-librdkafka{{.KAFKAVER}}-static
+
+  build-circle:
+    desc: Build Circle image
+    cmds:
+      - docker build -t unitedwardrobe/golang-librdkafka:{{.TAG}} ./circle-golang-librdkafka/{{.TAG}}
+    vars:
+      TAG: circle-golang{{.GOVER}}-librdkafka{{.KAFKAVER}}
+
+  push-circle:
+    desc: Push Circle image
+    cmds:
+      - docker push unitedwardrobe/golang-librdkafka:{{.TAG}}
+    vars:
+      TAG: circle-golang{{.GOVER}}-librdkafka{{.KAFKAVER}}
