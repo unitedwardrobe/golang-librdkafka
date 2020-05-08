@@ -1,31 +1,19 @@
-golang-librdkafka
+Contains the Dockerfiles for building our build images (the images for the containers that we use to build for example Kafka applications in).
 
-## Alpine
+See Taskfile.yml for options.
 
-Build and tag (from within the directory that contains the Dockerfile):
+## Static building
+
+Build with `-tags=musl` (was `-tags=static_all` before alpine 3.11). Example of building a Go app inside a container, taken from order-service:
+
 ```
-ALPVER=3.11 GOVER=1.13.5 KAFKAVER=1.3.0 \
-TAG=alpine${ALPVER}-golang${GOVER}-librdkafka${KAFKAVER} && \
-docker build -t unitedwardrobe/golang-librdkafka:${TAG} . && \
-docker push unitedwardrobe/golang-librdkafka:${TAG}
-```
-
-## Alpine (static - includes librdkafka)
-
-Build and tag (from within the directory that contains the Dockerfile): 
-```
-ALPVER=3.11 GOVER=1.13.5 KAFKAVER=1.3.0 \
-TAG=alpine${ALPVER}-golang${GOVER}-librdkafka${KAFKAVER}-static && \
-docker build -t unitedwardrobe/golang-librdkafka:${TAG} . && \
-docker push unitedwardrobe/golang-librdkafka:${TAG}
-```
-
-## Circle
-
-Build and tag (from within the directory that contains the Dockerfile):
-```
-GOVER=1.13.5 KAFKAVER=1.3.0 \
-TAG=circle-golang${GOVER}-librdkafka${KAFKAVER} && \
-docker build -t unitedwardrobe/golang-librdkafka:${TAG} . && \
-docker push unitedwardrobe/golang-librdkafka:${TAG}
+docker run \
+    -v "$(pwd):/go/src/{{.PROJECT_DIR_FROM_GOPATH}}" \
+    -w "/go/src/{{.PROJECT_DIR_FROM_GOPATH}}" \
+    unitedwardrobe/golang-librdkafka:alpine3.11-golang1.14.2-librdkafka1.4.2-static \
+    go build \
+        -mod vendor \
+        -tags musl \
+        -o bin/{{.APP_NAME}} \
+        -a /go/src/{{.PROJECT_DIR_FROM_GOPATH}}/cmd/{{.APP_NAME}}
 ```
