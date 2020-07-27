@@ -1,9 +1,9 @@
 version: '2'
 
 vars:
-  ALPVER: 3.11
-  GOVER: 1.14.3
-  KAFKAVER: 1.4.2
+  ALPVER: 3.12
+  GOVER: 1.14.6
+  KAFKAVER: 1.4.4
 
 tasks:
   build-push:
@@ -13,21 +13,18 @@ tasks:
       - task: push-alpine
       - task: build-alpine-static
       - task: push-alpine-static
-      - task: build-circle
-      - task: push-circle
 
   build-alpine:
     desc: Build alpine image
     cmds:
       - docker build -t unitedwardrobe/golang-librdkafka:{{.TAG}} ./alpine-golang-librdkafka/{{.TAG}}
-      - docker push unitedwardrobe/golang-librdkafka:{{.TAG}}
     vars:
       TAG: alpine{{.ALPVER}}-golang{{.GOVER}}-librdkafka{{.KAFKAVER}}
 
   push-alpine:
     desc: Push alpine image
     cmds:
-      - docker build -t unitedwardrobe/golang-librdkafka:{{.TAG}} ./alpine-golang-librdkafka/{{.TAG}}
+      - docker push unitedwardrobe/golang-librdkafka:{{.TAG}}
     vars:
       TAG: alpine{{.ALPVER}}-golang{{.GOVER}}-librdkafka{{.KAFKAVER}}
 
